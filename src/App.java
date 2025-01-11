@@ -1,12 +1,15 @@
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class App {
     public static void main(String[] args) throws Exception {
         Scanner ler = new Scanner(System.in);
+        List<Usuarios>usuarios = new ArrayList<>();
         
         int option = 0;
-        Cadastro cadastro = new Cadastro();
-            while(option != 4){
+        Cadastro cadastro = new Cadastro(usuarios);
+            while(true){
                 System.out.println("Protótipo - Menu\n");
                 System.out.println("Selecione uma opção:\n1-Cadastrar usuário\n2-Fazer login\n3-Ranking de jogadores");
                 option = ler.nextInt();
@@ -20,7 +23,7 @@ public class App {
 
                     case 2: 
                     System.out.println("Fazendo login.\n");
-                    Login login = new Login();
+                    Login login = new Login(usuarios);
                     login.SistemaLogin();
                     break;
                     //adicionar método LOGIN

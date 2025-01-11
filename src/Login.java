@@ -11,8 +11,14 @@ private List<Usuarios> usuarios;
    public Login(){
     this.nome = "default";
     this.senha = "default";
+    this.usuarios = new ArrayList<>();
     
    }
+   public Login(List<Usuarios> usuarios) {
+    this.nome = "default";
+    this.senha = "default";
+    this.usuarios = usuarios != null ? usuarios : new ArrayList<>(); // Inicializa lista se nula
+}
 
    public String getSenha() {
     return senha;
@@ -43,6 +49,11 @@ public void setNome(String nome) {
     }
 
     public void Autenticacao(){
+
+        if (usuarios.isEmpty()) {
+            System.out.println("Nenhum usuário registrado no sistema.");
+            return;
+        }
         boolean autenticado = false;
         for(Usuarios x : usuarios ){
             if (x.getNome().equals(nome) && x.getSenha().equals(senha)) {

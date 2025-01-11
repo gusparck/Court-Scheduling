@@ -2,17 +2,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Cadastro {
-    List<Usuarios> usuarios = new ArrayList<>();
+    private List<Usuarios> usuarios;
 
     // Construtor para inicializar a lista e adicionar um usuário inicial
-    public Cadastro() {
-        usuarios = new ArrayList<>();
+    public Cadastro(List<Usuarios> usuarios) {
+        this.usuarios = usuarios != null ? usuarios : new ArrayList<>(); // Inicializa lista se nula
     }
 
     // Método para adicionar novos usuários
     public void adicionarUsuario(String nome, String senha) {
         Usuarios usuario = new Usuarios(nome, senha);
         usuarios.add(usuario);
+        listarUsuarios();
        // listarUsuarios();
     }
 
