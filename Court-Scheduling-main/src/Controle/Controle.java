@@ -2,9 +2,7 @@ package Controle;
 /*classe de controle, aqui estarão todos métodos do programa, evitem usar aqui entrada
 e saida de dados*/
 import Entidades.Usuarios;
-
 import java.util.ArrayList;
-import java.util.List;
 
 public class Controle
 {
@@ -15,9 +13,9 @@ public class Controle
     }
 
     // Metodo para adicionar novos usuarios
-    public void adicionarUsuario(String nome, String senha) {
+    public void adicionarUsuario(String nome, String senha, String email, String telefone){
         //necessita de metodo para impedir usuarios com mesmo nome
-        Usuarios usuario = new Usuarios(nome, senha);
+        Usuarios usuario = new Usuarios(nome, senha, email, telefone);
         usuarios.add(usuario);
     }
 
@@ -35,6 +33,26 @@ public class Controle
 
         return null;
     }
+
+    public boolean atualizarDados(String novaSenha, String novoEmail, String novoTelefone){
+
+        for (Usuarios usuario : usuarios) {
+                if (novaSenha != null && !novaSenha.isEmpty()) {
+                    usuario.setSenha(novaSenha);
+                }
+                if (novoEmail != null && !novoEmail.isEmpty()) {
+                    usuario.setEmail(novoEmail);
+                }
+                if (novoTelefone != null && !novoTelefone.isEmpty()) {
+                    usuario.setTelefone(novoTelefone);
+                }
+                System.out.println("Dados do usuário atualizados com sucesso!");
+                return true;
+            }
+        return false;
+    }
+
+    
 
     // metodo para exibir os usuários cadastrados (apenas para teste)
     //nao pode estar nesta classe

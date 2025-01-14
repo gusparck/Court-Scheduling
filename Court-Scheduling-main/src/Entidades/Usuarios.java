@@ -8,7 +8,7 @@ public class Usuarios {
     private String telefone;
     private int pontuacao;
 
-    public Usuarios(String nome, String senha) {
+    public Usuarios(String nome, String senha, String email, String telefone) {
         this.nome = nome;
         this.senha = senha;
         this.email = "";

@@ -2,7 +2,6 @@ package Console;
 
 import Controle.Controle;
 import Entidades.Usuarios;
-
 import java.util.Scanner;
 
 public class consoleMenu {
@@ -26,7 +25,7 @@ public class consoleMenu {
 
     public boolean menuPrincipal() {
         int option;
-        String nome, senha;
+        String nome, senha, email, telefone;
         System.out.println("Protótipo - Menu\n");
         System.out.println("""
                 Selecione uma opção:
@@ -37,19 +36,23 @@ public class consoleMenu {
                 """);
         option = input.nextInt();
         switch (option) {
-            case 1:
-               /*caso fizermos interface é melhor criar uma classe dentro de console para ler do
-               teclado e printar*/
+            case 1 -> {
+                /*caso fizermos interface é melhor criar uma classe dentro de console para ler do
+                teclado e printar*/
                 input.nextLine(); //limpando o buffer
                 System.out.println("Realizando cadastro.\n");
                 System.out.println("Digite um nome de usuario: ");
                 nome = input.nextLine();
                 System.out.println("\nDigite uma senha: ");
                 senha = input.nextLine();
-                ctrl.adicionarUsuario(nome, senha);
-                break;
+                System.out.println("\nDigite um e-mail para cadastro: ");
+                email = input.nextLine();
+                System.out.println("\nDigite um telefone válido: ");
+                telefone = input.nextLine();
+                ctrl.adicionarUsuario(nome, senha, email, telefone);
+            }
 
-            case 2:
+            case 2 -> {
                 input.nextLine(); //limpando o buffer
                 System.out.println("Fazendo login.\n");
                 System.out.print("Digite seu nome: ");
@@ -68,25 +71,23 @@ public class consoleMenu {
                 else{
                     System.out.println("Ocorreu um erro durante a autenticação. Tente novamente.\n");
                 }
-                break;
+            }
 
-            case 3:
-                System.out.println("Conferindo ranking dos melhores jogadores.\n");
-                //adicionar metodo ranking
-                break;
+            case 3 -> System.out.println("Conferindo ranking dos melhores jogadores.\n");
+            //adicionar metodo ranking
 
-            case 4:
+            case 4 -> {
                 return false;
+            }
 
-            default:
-                System.out.println("Digite uma opcao valida.\n");
-                break;
+            default -> System.out.println("Digite uma opcao valida.\n");
         }
         return true;
     }
 
     public boolean menuCliente(Usuarios usuario) {
         int option;
+        String senha, email, telefone;
         System.out.println("""
                 \nSelecione uma opção:
                 1-Locar quadra
@@ -106,7 +107,31 @@ public class consoleMenu {
                 break;
 
             case 3:
-                //implementar menu de edição
+                //exibirInfo(usuario); por algum motivo email e telefone não aparecem aqui
+                System.out.println("Deseja atualizar seus dados?\n");
+                System.out.println("""
+                \nSelecione uma opção:
+                1-Sim
+                2-Não
+                """);
+                int ans = input.nextInt();
+                if(ans == 1){
+                input.nextLine(); 
+                System.out.println("Edição de dados:\n");
+                System.out.println("\nDigite sua nova senha: ");
+                senha = input.nextLine();
+                System.out.println("\nDigite um novo e-mail para cadastro: ");
+                email = input.nextLine();
+                System.out.println("\nDigite um novo telefone válido: ");
+                telefone = input.nextLine();
+                ctrl.atualizarDados(senha, email, telefone); //cabe otimização nesse método
+                System.out.println("Novos dados do usuario" + usuario.getNome() + ".");
+                exibirInfo(usuario);
+                
+                } else {
+                    break;
+                }
+                break;
 
             case 4:
                 //implementar esquema letz play
@@ -120,5 +145,12 @@ public class consoleMenu {
                 break;
         }
         return true;
+    }
+
+    public void exibirInfo(Usuarios usuario){
+        System.out.println("Nome: " + usuario.getNome() + ".");
+        System.out.println("Senha: " + usuario.getSenha() + ".");
+        System.out.println("E-mail: " + usuario.getEmail() + ".");
+        System.out.println("Telefone: " + usuario.getTelefone() + ".\n");
     }
 }

@@ -1,7 +1,5 @@
 package Entidades;
 
-import java.util.ArrayList;
-
 public class Quadras {
     private String nome;
     private String endereco;
