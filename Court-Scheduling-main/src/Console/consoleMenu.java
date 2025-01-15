@@ -2,7 +2,13 @@ package Console;
 
 import Controle.Controle;
 import Entidades.Usuarios;
+import Entidades.Quadras;
+import Entidades.Reservas;
 import java.util.Scanner;
+import java.math.BigInteger;
+import java.util.Random;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 public class consoleMenu {
     private Scanner input;
@@ -39,6 +45,10 @@ public class consoleMenu {
             case 1 -> {
                 /*caso fizermos interface é melhor criar uma classe dentro de console para ler do
                 teclado e printar*/
+
+                Random random = new Random();
+                BigInteger numeroGrande = new BigInteger(1024, random); 
+
                 input.nextLine(); //limpando o buffer
                 System.out.println("Realizando cadastro.\n");
                 System.out.println("Digite um nome de usuario: ");
@@ -49,7 +59,8 @@ public class consoleMenu {
                 email = input.nextLine();
                 System.out.println("\nDigite um telefone válido: ");
                 telefone = input.nextLine();
-                ctrl.adicionarUsuario(nome, senha, email, telefone);
+                ctrl.adicionarUsuario(numeroGrande.intValue(),nome, senha, email, telefone);
+
             }
 
             case 2 -> {
@@ -100,6 +111,18 @@ public class consoleMenu {
         switch (option) {
             case 1:
                 //implementar locação de quadras
+
+                ctrl.adicionarQuadra(new Quadras(2, "Quadra 2", "Bairro: Loanda"));
+
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+
+                System.out.print("Digite o ID da quadra que deseja jogar: ");
+                int idQuadra = input.nextInt();
+                input.nextLine();
+                System.out.print("Digite o horario que deseja jogar(HH:mm): ");
+                String inputHorario = input.nextLine();
+                LocalTime horario = LocalTime.parse(inputHorario, formatter);
+                ctrl.reservarQuadra(usuario.getId(), idQuadra, horario);
                 break;
 
             case 2:
