@@ -7,7 +7,7 @@ import Entidades.Reservas;
 import java.util.Scanner;
 import java.math.BigInteger;
 import java.util.Random;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class consoleMenu {
@@ -114,14 +114,14 @@ public class consoleMenu {
 
                 ctrl.adicionarQuadra(new Quadras(2, "Quadra 2", "Bairro: Loanda"));
 
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
                 System.out.print("Digite o ID da quadra que deseja jogar: ");
                 int idQuadra = input.nextInt();
                 input.nextLine();
-                System.out.print("Digite o horario que deseja jogar(HH:mm): ");
+                System.out.print("Digite o horario que deseja jogar(dd/MM/yyyy HH:mm): ");
                 String inputHorario = input.nextLine();
-                LocalTime horario = LocalTime.parse(inputHorario, formatter);
+                LocalDateTime horario = LocalDateTime.parse(inputHorario, formatter);
                 ctrl.reservarQuadra(usuario.getId(), idQuadra, horario);
                 break;
 

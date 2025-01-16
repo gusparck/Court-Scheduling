@@ -5,7 +5,7 @@ import Entidades.Reservas;
 e saida de dados*/
 import Entidades.Usuarios;
 
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class Controle
@@ -61,27 +61,24 @@ public class Controle
         return false;
     }
 
-    public boolean reservarQuadra(int usuarioId, int quadraId, LocalTime horario) {
-    Quadras quadra = quadras.stream()
-        .filter(q -> q.getId() == quadraId)
-        .findFirst()
-        .orElse(null);
+    public boolean reservarQuadra(int usuarioId, int quadraId, LocalDateTime horario) {
+    Quadras quadra = quadras.stream().filter(q -> q.getId() == quadraId).findFirst().orElse(null);
 
     Usuarios usuario = usuarios.stream()
-        .filter(u -> u.getId() == usuarioId)
-        .findFirst()
-        .orElse(null);
+        .filter(u -> u.getId() == usuarioId).findFirst().orElse(null);
 
     // Verifica se a quadra já está reservada no horário
     boolean conflito = reservas.stream()
         .anyMatch(r -> r.getQuadra().getId() == quadraId && r.getHorario().equals(horario));
 
-    if (quadra != null && usuario != null && !conflito) {
-        reservas.add(new Reservas(reservas.size() + 1, usuario, quadra, horario));
-        System.out.println("Reserva feita com sucesso!");
-        return true;
-    }
+        boolean indisponivel = quadra != null && !quadra.isDisponivel(horario);
 
+        if (quadra != null && usuario != null && !conflito && !indisponivel) {
+            reservas.add(new Reservas(reservas.size() + 1, usuario, quadra, horario));
+            System.out.println("Reserva feita com sucesso!");
+            quadra.adicionarIndisponibilidade(horario, horario.plusHours(1));
+            return true;
+        }
     System.out.println("Não foi possível realizar a reserva. Quadra já reservada nesse horário.");
     return false;
 }
