@@ -86,6 +86,12 @@ public class Controle
 public void adicionarQuadra(Quadras quadra) {
     quadras.add(quadra);
 }
+
+public void lerLocacao(){
+    for(Reservas x : reservas){
+        System.out.println("ID da quadra locada: " +x.getQuadra().getId());
+    }
+}
     
 
     // metodo para exibir os usuários cadastrados (apenas para teste)

@@ -127,6 +127,7 @@ public class consoleMenu {
 
             case 2:
                 //implementar verificação de quadra locada
+                ctrl.lerLocacao();
                 break;
 
             case 3:

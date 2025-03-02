@@ -22,4 +22,5 @@ public class Reservas {
     public Quadras getQuadra() { return quadra;}
 
     public LocalDateTime getHorario() {return horario;}
+
 }

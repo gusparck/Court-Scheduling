@@ -19,6 +19,10 @@ public class Quadras {
         this.indisponibilidades = new ArrayList<>();
     }
 
+    public Quadras(){
+
+    }
+
     public int getId(){return id;}
     public void setId(int id ){this.id = id;}
 
@@ -37,3 +41,5 @@ public class Quadras {
                 .noneMatch(periodo -> !horario.isBefore(periodo.getInicio()) && !horario.isAfter(periodo.getFim()));
     }
 }
+
+
