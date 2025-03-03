@@ -88,8 +88,9 @@ public void adicionarQuadra(Quadras quadra) {
 }
 
 public void lerLocacao(){
+    System.out.println("ID da(s) quadra(s) locada(s): ");
     for(Reservas x : reservas){
-        System.out.println("ID da quadra locada: " +x.getQuadra().getId());
+         System.out.println(x.getQuadra().getId());
     }
 }
     
