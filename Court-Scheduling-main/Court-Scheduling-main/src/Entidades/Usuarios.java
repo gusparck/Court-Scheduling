@@ -18,8 +18,8 @@ public class Usuarios {
         this.id = id;
         this.nome = nome;
         this.senha = senha;
-        this.email = "";
-        this.telefone = "";
+        this.email = email;
+        this.telefone = telefone;
         this.pontuacao = 0;
         this.locacoes = new ArrayList<>();
     }
