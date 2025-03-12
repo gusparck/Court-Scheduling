@@ -5,6 +5,7 @@ import Entidades.Dia;
 import Entidades.Usuarios;
 import Entidades.Quadras;
 import Entidades.Reservas;
+import Entidades.Admins;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -43,8 +44,10 @@ public class consoleMenu {
                 Selecione uma opção:
                 1-Cadastrar usuário
                 2-Fazer login
-                3-Ranking de jogadores
-                4-Sair
+                3-Cadastrar Admin 
+                4-Fazer Login como administrador
+                5-Ranking de jogadores
+                6-Sair
                 """);
         optionInt = input.nextInt();
         switch (optionInt) {
@@ -65,10 +68,11 @@ public class consoleMenu {
                 email = input.nextLine();
                 System.out.println("\nDigite um telefone válido: ");
                 telefone = input.nextLine();
+                Usuarios usuario = new Usuarios(numeroGrande.intValue(), nome, senha, email, telefone, "Cliente");
 
-                if (ctrl.adicionarUsuario(numeroGrande.intValue(),nome, senha, email, telefone)==0){
+                if (ctrl.adicionarUsuario(usuario)== 0){
                     System.out.println("\nUsuário criado com sucesso!");
-                } else if (ctrl.adicionarUsuario(numeroGrande.intValue(),nome, senha, email, telefone)==1) {
+                } else if (ctrl.adicionarUsuario(usuario)==1) {
                     System.out.println("\nPreencha todos os campos!");
                 }
                 else{
@@ -85,7 +89,7 @@ public class consoleMenu {
                 System.out.print("\nDigite sua senha: ");
                 senha = input.nextLine();
 
-                Usuarios usuario = ctrl.autenticacaoLogin(nome, senha);
+                Usuarios usuario = ctrl.autenticacaoLogin(nome, senha, "Cliente");
                 if (usuario!=null){
                     System.out.println("\nLogin bem-sucedido! Bem-vindo, " + usuario.getNome() + "!");
                     boolean ativo = true;
@@ -98,10 +102,60 @@ public class consoleMenu {
                 }
             }
 
-            case 3 -> System.out.println("\nConferindo ranking dos melhores jogadores.\n");
-            //adicionar metodo ranking
+            case 3 ->{
+                
+                Random random = new Random();
+                BigInteger numeroGrande = new BigInteger(1024, random); 
+
+                input.nextLine(); //limpando o buffer
+                System.out.println("Realizando cadastro.\n");
+                System.out.println("Digite um nome do usuario administrador: ");
+                nome = input.nextLine();
+                System.out.println("\nDigite uma senha: ");
+                senha = input.nextLine();
+                System.out.println("\nDigite um e-mail para cadastro: ");
+                email = input.nextLine();
+                System.out.println("\nDigite um telefone válido: ");
+                telefone = input.nextLine();
+
+                Usuarios admin = new Admins(numeroGrande.intValue(), nome, senha, email, telefone, "Administrador");
+
+                if (ctrl.adicionarUsuario(admin)== 0){
+                    System.out.println("\nUsuário criado com sucesso!");
+                } else if (ctrl.adicionarUsuario(admin) ==1) {
+                    System.out.println("\nPreencha todos os campos!");
+                }
+                else{
+                    System.out.println("\nJá existe um usuário com este nome! Insira outro.");
+                }
+            }
 
             case 4 -> {
+                input.nextLine(); //limpando o buffer
+                System.out.println("\nFazendo login.\n");
+                System.out.print("\nDigite seu nome: ");
+                nome = input.nextLine();
+                System.out.print("\nDigite sua senha: ");
+                senha = input.nextLine();
+
+                Usuarios usuario = ctrl.autenticacaoLogin(nome, senha, "Administrador");
+                if (usuario!=null){
+                    System.out.println("\nLogin bem-sucedido! Bem-vindo, " + usuario.getNome() + "!");
+                    boolean ativo = true;
+                    while(ativo){
+                        ativo = menuAdmin(usuario);
+                    }
+                }
+                else{
+                    System.out.println("\nOcorreu um erro durante a autenticação. Tente novamente.\n");
+                }
+
+            }
+
+            case 5 -> System.out.println("\nConferindo ranking dos melhores jogadores.\n");
+            //adicionar metodo ranking
+
+            case 6 -> {
                 return false;
             }
 
@@ -220,6 +274,52 @@ public class consoleMenu {
                 break;
         }
         return true;
+    }
+
+    public boolean menuAdmin(Usuarios admin){
+
+        System.out.println("""
+            \nSelecione uma opção:
+            1-Adicionar quadra
+            2-Verificar quadras locadas
+            3-Cancelar Locacao
+            4-Meus dados
+            5-Excluir usuarios
+            6-Sair
+            """);
+        optionInt = input.nextInt();
+        switch (optionInt) {  
+            case 1:
+                System.out.println("Escolha um ID para a quadra: ");
+                int id = input.nextInt();
+                System.out.println("Escreva o nome da quadra: ");
+                String nomeQuadra = input.nextLine();
+                System.out.println("Digite o endereço da quadra: ");
+                String enderecoQuadra = input.nextLine();
+                ctrl.adicionarQuadra(new Quadras(id, nomeQuadra, enderecoQuadra));
+            break;
+            case 2:
+            ArrayList<Dia> locacoes = ctrl.exibirLocacoes(admin);
+            for (Dia x : locacoes){
+                System.out.println(x.getQuadraPertencente() + " - " + x.getHorasDisponiveis());
+            }
+            break;
+            case 3: 
+                System.out.println("Cancelamentos de agendamentos: ");
+                System.out.println("Digite o nome do cliente: ");
+                String nomeCliente = input.nextLine();
+                ctrl.pesquisarUsuarios(admin);
+
+            break;
+
+            default:
+                System.out.println("Digite uma opcao valida.\n");
+                break;
+        }
+        return true;
+
+
+
     }
 
     public void exibirInfo(Usuarios usuario){

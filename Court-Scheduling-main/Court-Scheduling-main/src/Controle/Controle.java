@@ -1,5 +1,6 @@
 package Controle;
 
+import Entidades.Admins;
 import Entidades.Dia;
 import Entidades.Quadras;
 import Entidades.Reservas;
@@ -16,6 +17,7 @@ public class Controle
     private final ArrayList <Usuarios> usuarios;
     private final ArrayList<Quadras> quadras;
     private final ArrayList<Reservas> reservas;
+    private final ArrayList<Admins> admins;
 
     DateTimeFormatter formatterDay = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     DateTimeFormatter formatterHour = DateTimeFormatter.ofPattern("HH:mm");
@@ -24,41 +26,40 @@ public class Controle
         usuarios = new ArrayList<>();
         quadras = new ArrayList<>();
         reservas = new ArrayList<>();
+        admins = new ArrayList<>();
     }
 
     // Metodo para adicionar novos usuarios
-    public int adicionarUsuario(int id, String nome, String senha, String email, String telefone){
-        if (nome.isEmpty() || senha.isEmpty() || email.isEmpty() || telefone.isEmpty()) {
+    public int adicionarUsuario(Usuarios usuario){
+        if (usuario.getNome().isEmpty() || usuario.getSenha().isEmpty() || usuario.getEmail().isEmpty() || usuario.getTelefone().isEmpty()) {
             return 1; //verifica caso campos estejam em branco
         }
         else {
             //pesquisa um usuario com o nome fornecido para evitar duplicatas
-            if (pesquisarUsuarios(nome,"","",1) != null ||
-                pesquisarUsuarios("",email,"",2)!= null ||
-                pesquisarUsuarios("","",telefone,3) != null)
+            if (pesquisarUsuarios(usuario) != null)
             {
                 return 2;
             }
-            Usuarios usuario = new Usuarios(id, nome, senha, email, telefone);
             usuarios.add(usuario);
             return 0;
         }
     }
 
     //metodo de autenticacao de login
-    public Usuarios autenticacaoLogin(String nome, String senha) {
+    public Usuarios autenticacaoLogin(String nome, String senha, String tipoConta) {
         if (usuarios.isEmpty()) {
             return null;
         }
 
         for(Usuarios x : usuarios){
-            if (x.getNome().equals(nome) && x.getSenha().equals(senha)) {
+            if (x.getNome().equals(nome) && x.getSenha().equals(senha) && x.getTipoConta().equals(tipoConta)) {
                 return x;
             }
         }
 
         return null;
     }
+
 
     public void atualizarDados(Usuarios usuario,String novaSenha, String novoEmail,
                                   String novoTelefone, int op){
@@ -72,30 +73,25 @@ public class Controle
         }
     }
 
-    public Usuarios pesquisarUsuarios(String nome, String email, String telefone, int op){
+    public Usuarios pesquisarUsuarios(Usuarios usuario){
         if (usuarios.isEmpty()) {
             return null;
         }
-        if (op==1) {
+        
             for (Usuarios x : usuarios) {
-                if (x.getNome().equals(nome)) {
+                if (x.getNome().equals(usuario.getNome())) {
+                    return x;
+                }
+                if (x.getEmail().equals(usuario.getEmail())) {
+                    return x;
+                }
+               
+                if (x.getTelefone().equals(usuario.getTelefone())) {
                     return x;
                 }
             }
-        } else if (op==2) {
-            for (Usuarios x : usuarios) {
-                if (x.getEmail().equals(email)) {
-                    return x;
-                }
-            }
-        }
-        else if (op==3) {
-            for (Usuarios x : usuarios) {
-                if (x.getTelefone().equals(telefone)) {
-                    return x;
-                }
-            }
-        }
+            
+    
         return null;
     }
 

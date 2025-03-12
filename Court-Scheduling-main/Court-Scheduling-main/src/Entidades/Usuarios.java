@@ -11,16 +11,18 @@ public class Usuarios {
     private String email;
     private String telefone;
     private int pontuacao;
+    private String tipoConta;
     //private int posicaoRanking;
     private ArrayList<Dia> locacoes;
 
-    public Usuarios(int id, String nome, String senha, String email, String telefone) {
+    public Usuarios(int id, String nome, String senha, String email, String telefone, String tipoConta) {
         this.id = id;
         this.nome = nome;
         this.senha = senha;
         this.email = email;
         this.telefone = telefone;
         this.pontuacao = 0;
+        this.tipoConta = tipoConta;
         this.locacoes = new ArrayList<>();
     }
 
@@ -42,6 +44,8 @@ public class Usuarios {
     public int getPontuacao() {return pontuacao;}
     public void setPontuacao(int pontuacao) {this.pontuacao = pontuacao;}
 
+    public String getTipoConta(){ return tipoConta;}
+    
     //public int getPosicaoRanking(){};
     //public void setPosicaoRanking(){};
 
