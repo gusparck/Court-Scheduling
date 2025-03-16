@@ -14,8 +14,11 @@ public class Usuarios {
     private String tipoConta;
     //private int posicaoRanking;
     private ArrayList<Dia> locacoes;
+    private boolean desafiado;
 
-    public Usuarios(int id, String nome, String senha, String email, String telefone, String tipoConta) {
+    
+
+    public Usuarios(int id, String nome, String senha, String email, String telefone, String tipoConta, boolean desafiado) {
         this.id = id;
         this.nome = nome;
         this.senha = senha;
@@ -24,6 +27,7 @@ public class Usuarios {
         this.pontuacao = 0;
         this.tipoConta = tipoConta;
         this.locacoes = new ArrayList<>();
+        this.desafiado = desafiado;
     }
 
     public int getId(){return id;}
@@ -45,6 +49,15 @@ public class Usuarios {
     public void setPontuacao(int pontuacao) {this.pontuacao = pontuacao;}
 
     public String getTipoConta(){ return tipoConta;}
+
+    public boolean isDesafiado() {
+        return desafiado;
+    }
+
+    public void setDesafiado(boolean desafiado) {
+        this.desafiado = desafiado;
+    }
+    
     
     //public int getPosicaoRanking(){};
     //public void setPosicaoRanking(){};

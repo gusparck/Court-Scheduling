@@ -6,10 +6,14 @@ import Entidades.Usuarios;
 import Entidades.Quadras;
 import Entidades.Reservas;
 import Entidades.Admins;
+import Entidades.Desafio;
 
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Scanner;
+
+import javax.crypto.spec.DESKeySpec;
+
 import java.math.BigInteger;
 import java.util.Random;
 import java.time.LocalDateTime;
@@ -68,7 +72,7 @@ public class consoleMenu {
                 email = input.nextLine();
                 System.out.println("\nDigite um telefone válido: ");
                 telefone = input.nextLine();
-                Usuarios usuario = new Usuarios(numeroGrande.intValue(), nome, senha, email, telefone, "Cliente");
+                Usuarios usuario = new Usuarios(numeroGrande.intValue(), nome, senha, email, telefone, "Cliente", false);
 
                 if (ctrl.adicionarUsuario(usuario)== 0){
                     System.out.println("\nUsuário criado com sucesso!");
@@ -118,7 +122,7 @@ public class consoleMenu {
                 System.out.println("\nDigite um telefone válido: ");
                 telefone = input.nextLine();
 
-                Usuarios admin = new Admins(numeroGrande.intValue(), nome, senha, email, telefone, "Administrador");
+                Usuarios admin = new Admins(numeroGrande.intValue(), nome, senha, email, telefone, "Administrador", false);
 
                 if (ctrl.adicionarUsuario(admin)== 0){
                     System.out.println("\nUsuário criado com sucesso!");
@@ -165,6 +169,9 @@ public class consoleMenu {
     }
 
     public boolean menuCliente(Usuarios usuario) {
+
+       ctrl.mensagemDesafiante(usuario);
+
         String senha, email, telefone;
         System.out.println("""
                 \nSelecione uma opção:
@@ -172,7 +179,8 @@ public class consoleMenu {
                 2-Verificar quadras locadas
                 3-Meus dados
                 4-Desafiar jogadores
-                5-Sair
+                5 - Lista Jogadores
+                6-Sair
                 """);
         optionInt = input.nextInt();
         switch (optionInt) {
@@ -263,12 +271,48 @@ public class consoleMenu {
                 break;
 
             case 4:
-                //implementar esquema letz play
+                System.out.println("Digite o ID do jogador que deseja desafiar: ");
+                int idDesafiante = input.nextInt();    
+                System.out.println("\nSelecione uma quadra:\n");
+                ArrayList <Quadras> quadrasD = ctrl.exibirQuadras();
+                for (Quadras x : quadrasD){
+                    System.out.println("\n[1]" + x.getNome());
+                }
+                optionInt = input.nextInt();
+                Quadras qu = quadrasD.get(optionInt-1);
+
+                System.out.println("\nDigite o dia no qual deseja locar a quadra");
+                optionString = input.nextLine();
+
+                if (ctrl.exibirDisponibilidadeQuadra(qu,optionString)!=null) {
+                    for (String x : ctrl.exibirDisponibilidadeQuadra(qu, optionString)) {
+                        System.out.println("\n[1] " + x);
+                    }
+                    optionInt = input.nextInt();
+                    String horario = ctrl.exibirDisponibilidadeQuadra(qu,optionString).get(optionInt-1);
+
+                    if (ctrl.reservarQuadra(usuario,qu,optionString,horario)) {
+                        System.out.println("\nQuadra locada com sucesso!");
+                    }
+                    else {
+                        System.out.println("\nErro. Quadra não locada!");
+                    }
+                }
+                else{
+                    System.out.println("\nEste dia está indisponível!");
+                }
+
+               ctrl.gerenciarDesafio(idDesafiante, usuario);
+
+                    
+
                 break;
 
             case 5:
+               ctrl.listarUsuarios();
+            break;
+            case 6:
                 return false;
-
             default:
                 System.out.println("Digite uma opcao valida.\n");
                 break;

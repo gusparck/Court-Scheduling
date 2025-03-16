@@ -1,6 +1,7 @@
 package Controle;
 
 import Entidades.Admins;
+import Entidades.Desafio;
 import Entidades.Dia;
 import Entidades.Quadras;
 import Entidades.Reservas;
@@ -8,6 +9,7 @@ import Entidades.Usuarios;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 /*classe de controle, aqui estarão todos métodos do programa, evitem usar aqui entrada
 e saida de dados*/
@@ -18,6 +20,7 @@ public class Controle
     private final ArrayList<Quadras> quadras;
     private final ArrayList<Reservas> reservas;
     private final ArrayList<Admins> admins;
+    private final ArrayList<Desafio> desafios;
 
     DateTimeFormatter formatterDay = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     DateTimeFormatter formatterHour = DateTimeFormatter.ofPattern("HH:mm");
@@ -27,6 +30,7 @@ public class Controle
         quadras = new ArrayList<>();
         reservas = new ArrayList<>();
         admins = new ArrayList<>();
+        desafios = new ArrayList<>();
     }
 
     // Metodo para adicionar novos usuarios
@@ -166,13 +170,52 @@ public class Controle
         return usuario.getLocacoes();
     }
     
+    public void enviarDesafio(int id, Usuarios desafiador){
+       for(Usuarios x : usuarios){
+            if(x.getId() == id){
+                System.out.println("Um desafio foi enviado para o jogador "+ x.getNome()+ "!");
+                x.setDesafiado(true);
+            }
+       }  
+    }
 
-    // metodo para exibir os usuários cadastrados (apenas para teste)
-    //nao pode estar nesta classe
-//    public void listarUsuarios() {
-//        System.out.println("Usuários cadastrados:\n");
-//        for (Usuarios i : usuarios) {
-//            System.out.println("Nome: " + i.getNome());
-//        }
-//    }
+    public void gerenciarDesafio(int idDesafiante, Usuarios usuario){
+        Desafio desafio = new Desafio(1, idDesafiante, usuario.getId(), usuario, false);
+        enviarDesafio(idDesafiante, usuario);
+        desafios.add(desafio);
+    }
+
+    public void mensagemDesafiante(Usuarios usuario){
+       Scanner input = new Scanner(System.in);
+        if(usuario.isDesafiado() == true){
+            System.out.println("VOCE RECEBEU UM DESAFIO");
+            System.out.println("[1] - Aceitar\n [2] - Recusar");
+            int escolhaDesafio = input.nextInt();
+            if(escolhaDesafio == 1){
+                for(Desafio x : desafios){
+                    if(x.getIdDesafiante() == usuario.getId()){
+                        x.setStatusDesafio(true);
+                    
+                    }
+                
+                }
+            }
+            else{
+                for(Desafio x: desafios){
+                    if(x.getIdDesafiante() == usuario.getId()){
+                        desafios.remove(x);
+                    }
+                }
+            }
+        }
+        
+    }
+
+
+    public void listarUsuarios() {
+        System.out.println("Usuários cadastrados:\n"); 
+        for (Usuarios i : usuarios) {
+            System.out.println("Nome: " + i.getNome()+ " ID: "+i.getId());
+        }
+   }
 }
