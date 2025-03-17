@@ -52,19 +52,15 @@ public class consoleMenu {
                 System.out.println("Realizando cadastro.");
 
                 System.out.println("Digite um nome de usuario: ");
-                input.nextLine(); //limpando o buffer
                 nome = input.nextLine();
 
                 System.out.println("Digite uma senha: ");
-                input.nextLine(); //limpando o buffer
                 senha = input.nextLine();
 
                 System.out.println("Digite um e-mail para cadastro: ");
-                input.nextLine(); //limpando o buffer
                 email = input.nextLine();
 
                 System.out.println("Digite um telefone válido: ");
-                input.nextLine(); //limpando o buffer
                 telefone = input.nextLine();
 
                 usuario = new Clientes(numeroGrande.intValue(), nome, senha, email, telefone);
@@ -84,11 +80,9 @@ public class consoleMenu {
                 System.out.println("Fazendo login.");
 
                 System.out.print("Digite seu nome: ");
-                input.nextLine(); //limpando o buffer
                 nome = input.nextLine();
 
                 System.out.print("Digite sua senha: ");
-                input.nextLine(); //limpando o buffer
                 senha = input.nextLine();
 
                 if (ctrl.getAdmin().getNome().equals(nome) && ctrl.getAdmin().getSenha().equals(senha)) {
