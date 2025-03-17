@@ -4,6 +4,8 @@ import Controle.Controle;
 import Entidades.*;
 
 import java.util.*;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.math.BigInteger;
 import java.time.LocalDateTime;
 
@@ -63,7 +65,7 @@ public class consoleMenu {
                 System.out.println("Digite um telefone válido: ");
                 telefone = input.nextLine();
 
-                usuario = new Clientes(numeroGrande.intValue(), nome, senha, email, telefone);
+                usuario = new Clientes(numeroGrande.intValue(), nome, senha, email, telefone, null);
 
                 if (ctrl.adicionarUsuario(usuario) == 0) {
                     System.out.println("Usuário criado com sucesso!");
@@ -181,12 +183,16 @@ public class consoleMenu {
                     if (pagamentoLocacao(usuario)) {
                         ctrl.reservarQuadra(quadra, usuario, horario);
                         System.out.println("Quadra locada com sucesso!");
+    
                     } else {
                         System.out.println("Erro. Quadra não locada!");
                     }
                 } else {
                     System.out.println("Este horário está indisponível!");
                 }
+
+
+
                 break;
 
             case 2:
@@ -442,11 +448,11 @@ public class consoleMenu {
                 input.nextLine(); //limpando o buffer
 
                 System.out.println("Digite o nome: ");
-                input.nextLine(); //limpando o buffer
+                
                 String nomeQuadra = input.nextLine();
 
                 System.out.println("Digite o endereço: ");
-                input.nextLine(); //limpando o buffer
+               
                 String enderecoQuadra = input.nextLine();
 
                 //System.out.println("Digite o horario de funcionamento: ");
@@ -529,7 +535,7 @@ public class consoleMenu {
         System.out.println("Pontuação: " + usuario.getPontuacao());
     }
 
-    public boolean pagamentoLocacao(Usuarios usuario) {
+    public boolean pagamentoLocacao(Clientes usuario) {
         System.out.println("Como deseja pagar a locação?");
         System.out.println("""
                 [1] Cartão
@@ -538,12 +544,73 @@ public class consoleMenu {
         optionInt = input.nextInt();
         switch (optionInt) {
             case 1:
-                System.out.println("**implementar algo que simule pagamento com cartão");
+                int escolhaCartao = 0;
+                while (escolhaCartao != 3) {
+                    System.out.println("[1] - Selecionar Cartão\n[2] - Cadastrar Cartao\n[3] - Sair");
+                    escolhaCartao = input.nextInt();
+                    int count = 1;
+                    if (escolhaCartao == 1) {
+                        if (!usuario.getCartoes().isEmpty()) {
+                            System.out.println("Seus cartões(Numeros dos cartoes):");
+                            for (Cartao x : usuario.getCartoes()) {
+                                System.out.println("[" + count + "]" + x.getNumCartao());
+                                count++;
+                            }
+                            System.out.println("Escolha uma das opcoes de cartao: ");
+                            int escolhendoCartao = input.nextInt();
+                            count = 1;
+                            while (count <= escolhendoCartao) {
+
+                                if (count == escolhendoCartao) {
+                                    for (Cartao x : usuario.getCartoes()) {
+                                        if (x.getSaldo() > 50 * usuario.getReservas().size()) {
+                                            System.out.println("Pagamento feito com sucesso!");
+                                            x.sangriaPagamento(50 * usuario.getReservas().size());
+                                        }else{
+                                            System.out.println("Não há saldo suficiente no cartão!");
+                                        }
+                                        count++;
+                                    }
+                                }
+                                count++;
+                            }
+
+                        } else{
+                            System.out.println("Não ha cartoes cadastrados!");
+                        }
+                    }
+
+                    else if (escolhaCartao == 2) {
+                        System.out.println("Digite seu nome(o mesmo que esta no cartão): ");
+                        String nomeCartao = input.nextLine();
+                        input.nextLine();
+                        System.out.println("Digite o numero do cartão: ");
+                        String numCartao = input.nextLine();
+                        System.out.println("Digite o CVC: ");
+                        String cvcCartao = input.nextLine();
+                        System.out.println("Digite a data de validade: ");
+                        String dataValidade = input.nextLine();
+                        Cartao cartaoCliente = new Cartao(nomeCartao, numCartao, cvcCartao, dataValidade, 2000.00);
+                        usuario.setCartaoCliente(cartaoCliente);
+                        usuario.setCartoes(cartaoCliente);
+                        System.out.println("Cartao cadastrado com sucesso!");
+
+                    }
+                }
                 break;
 
             case 2:
-                System.out.println("**implementar algo que simule pagamento com pix");
-                break;
+                System.out.println("Leia o QR CODE");
+                System.out.println("[1] - Ler QRCODE");
+                int leituraQRCODE = input.nextInt();
+
+                if(leituraQRCODE == 1){
+                String data = "HELLO"; // Texto simples para gerar QR Code
+                gerarQRCodeSimples(data);
+                }else{
+                    System.out.println("Digite uma opcao válida.");
+                }
+            break;
 
             default:
                 System.out.println("Digite uma opcao válida.");
@@ -585,6 +652,22 @@ public class consoleMenu {
         System.out.println("Clientes cadastrados:\n");
         for (Clientes x : ctrl.getClientes()) {
             System.out.println("Nome: " + x.getNome() + " ID: " + x.getId());
+        }
+    }
+
+    public  void gerarQRCodeSimples(String data) {
+        int size = 10; // Define um tamanho fixo para o QR Code
+
+        // Geração de QR Code Fake (Apenas um padrão visual)
+        for (int y = 0; y < size; y++) {
+            for (int x = 0; x < size; x++) {
+                if ((x + y) % 2 == 0) { // Padrão alternado
+                    System.out.print("██");
+                } else {
+                    System.out.print("  ");
+                }
+            }
+            System.out.println();
         }
     }
 }
