@@ -2,12 +2,11 @@ package Console;
 
 import Controle.Controle;
 import Entidades.*;
-
-import java.util.*;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.math.BigInteger;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.*;
 
 public class consoleMenu {
     private final Scanner input;
@@ -175,23 +174,23 @@ public class consoleMenu {
                 System.out.println("Digite o dia e horário no qual deseja locar a quadra:");
                 System.out.println("*Digite no formato (dd/MM/yyyy HH:mm)");
                 //cliente pode digitar fora do padrão
-                input.nextLine(); //limpando o buffer
+                input.nextLine(); // limpando o buffer
                 optionString = input.nextLine();
-                LocalDateTime horario = ctrl.stringToDate(optionString);
 
-                if (quadra.estaDisponivel(horario)) {
+                LocalDateTime dataHora = ctrl.stringToDate(optionString);
+                LocalDate dia = dataHora.toLocalDate();
+                LocalTime horario = dataHora.toLocalTime();
+
+                if (quadra.estaDisponivel(dia, horario)) {
                     if (pagamentoLocacao(usuario)) {
-                        ctrl.reservarQuadra(quadra, usuario, horario);
+                        ctrl.reservarQuadra(quadra, usuario, dataHora);
                         System.out.println("Quadra locada com sucesso!");
-    
                     } else {
                         System.out.println("Erro. Quadra não locada!");
                     }
                 } else {
                     System.out.println("Este horário está indisponível!");
                 }
-
-
 
                 break;
 
@@ -330,10 +329,12 @@ public class consoleMenu {
                 input.nextLine(); //limpando o buffer
                 optionString = input.nextLine(); //adc verificacao de padrao do horario
 
-                LocalDateTime hDesafio = ctrl.stringToDate(optionString);
+                LocalDateTime dataHoraD = ctrl.stringToDate(optionString);
+                LocalDate diaD = dataHoraD.toLocalDate();
+                LocalTime horarioD = dataHoraD.toLocalTime();
 
-                if (qDesafio.estaDisponivel(hDesafio)) {
-                    ctrl.enviarDesafio(usuario, cDesafiado, qDesafio, hDesafio);
+                if (qDesafio.estaDisponivel(diaD, horarioD)) {
+                    ctrl.enviarDesafio(usuario, cDesafiado, qDesafio, dataHoraD);
                     System.out.println("O desafio foi enviado! O desafiante deve aceita-lo.");
                 } else {
                     System.out.println("Horário indisponível!");

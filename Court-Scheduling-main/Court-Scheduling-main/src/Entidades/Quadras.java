@@ -1,6 +1,9 @@
 package Entidades;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 public class Quadras {
@@ -26,6 +29,26 @@ public class Quadras {
     public void setEndereco(String endereco) {this.endereco = endereco;}
 
     public ArrayList<LocalDateTime> getReservas() {return reservas;}
+    
+    
+    public boolean diasdeNFuncionamento(LocalDate dia){
 
-    public boolean estaDisponivel(LocalDateTime dataHorario){return !reservas.contains(dataHorario);}
+        DayOfWeek diasdeNFuncionamento = dia.getDayOfWeek();
+
+        return diasdeNFuncionamento == DayOfWeek.MONDAY || diasdeNFuncionamento == DayOfWeek.SUNDAY;
+    }
+
+    public boolean horariodeNFuncionamento(LocalTime horario){
+        LocalTime abertura = LocalTime.of(7, 0);
+        LocalTime fechamento = LocalTime.of(21, 0);
+
+        return horario.isBefore(abertura) || horario.isAfter(fechamento);
+    }
+
+    public boolean estaDisponivel(LocalDate dia, LocalTime horario){
+        if(diasdeNFuncionamento(dia) || horariodeNFuncionamento(horario)){
+            return false;
+        } else{
+            return true;}
+    }
 }
