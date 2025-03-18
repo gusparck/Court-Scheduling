@@ -267,6 +267,7 @@ public class consoleMenu {
 
                             System.out.println("Novos dados do usuario" + usuario.getNome() + ".");
                             exibirInfoCliente(usuario);
+                            ctrl.salvarClientes();
                             break;
 
                         case 2:
@@ -277,6 +278,7 @@ public class consoleMenu {
 
                             System.out.println("Novos dados do usuario" + usuario.getNome() + ".");
                             exibirInfoCliente(usuario);
+                            ctrl.salvarClientes();
                             break;
 
                         case 3:
@@ -287,6 +289,7 @@ public class consoleMenu {
 
                             System.out.println("Novos dados do usuario" + usuario.getNome() + ".");
                             exibirInfoCliente(usuario);
+                            ctrl.salvarClientes();
                             break;
 
                         default:
@@ -462,6 +465,7 @@ public class consoleMenu {
                 //pensar em um jeito de implementar horario de funcionamento
 
                 ctrl.setQuadras(new Quadras(id, nomeQuadra, enderecoQuadra));
+                ctrl.salvarQuadras();
 
                 System.out.println("Quadra adicionada com sucesso!");
                 break;
@@ -501,6 +505,7 @@ public class consoleMenu {
                         quadra.setNome(optionString);
 
                         System.out.println("Novos dados do quadra " + quadra.getNome());
+                        ctrl.salvarQuadras();
                         break;
 
                     case 2:
@@ -510,6 +515,7 @@ public class consoleMenu {
                         quadra.setEndereco(optionString);
 
                         System.out.println("Novos dados do quadra " + quadra.getEndereco());
+                        ctrl.salvarQuadras();
                         break;
 
                     case 3:

@@ -1,12 +1,16 @@
 package Entidades;
 
+import java.io.Serializable;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
-public class Quadras {
+public class Quadras implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+    
     private int id;
     private String nome;
     private String endereco;

@@ -1,9 +1,17 @@
 package Controle;
 
 import Entidades.*;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
 
 /*classe de controle, aqui estarão todos métodos do programa, evitem usar aqui entrada
 e saida de dados*/
@@ -13,6 +21,8 @@ public class Controle
     private final ArrayList <Clientes> clientes;
     private final ArrayList<Quadras> quadras;
     private ArrayList <Clientes> ranking;
+    private static final String FILE_NAME = "clientes.dat";
+    private static final String FILE_QUADRA = "quadras.dat";
 
     public ArrayList<Clientes> getClientes() { return clientes; }
     public void setClientes(Clientes cliente) { clientes.add(cliente);}
@@ -35,6 +45,7 @@ public class Controle
 
     // Metodo para adicionar novos usuarios
     public int adicionarUsuario(Clientes cliente){
+
         if (cliente.getNome().isEmpty() || cliente.getSenha().isEmpty()
                 || cliente.getEmail().isEmpty() || cliente.getTelefone().isEmpty()) {
             return 1; //verifica caso campos estejam em branco
@@ -52,6 +63,7 @@ public class Controle
                 return 2;
             }
             setClientes(cliente);
+            salvarClientes();
             return 0;
         }
     }
@@ -116,5 +128,20 @@ public class Controle
 
     public LocalDateTime stringToDate (String stringDate){
         return LocalDateTime.parse(stringDate, formatterDate);
+    }
+
+     public void salvarClientes() {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(FILE_NAME))) {
+            oos.writeObject(clientes);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public void salvarQuadras() {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(FILE_QUADRA))) {
+            oos.writeObject(quadras);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
