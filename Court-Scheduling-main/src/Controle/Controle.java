@@ -53,7 +53,7 @@ public class Controle
                                     (x.getTelefone().equals(cliente.getTelefone())) )
                     { return 2; }
                 }
-                return 2;
+                
             }
             addClientes(cliente);
             return 0;

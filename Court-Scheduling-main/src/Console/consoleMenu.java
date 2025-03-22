@@ -309,12 +309,12 @@ public class consoleMenu {
 
             case 4:
                 input.nextLine(); //limpando o buffer
-
-                if (ctrl.getClientes().size() <= 1 || ctrl.getQuadras().isEmpty()) {
+               
+                if (ctrl.getClientes().size() <= 1 ||  ctrl.getQuadras().isEmpty()) {
                     System.out.println("Não existem quadras ou usuários suficientes na plataforma.");
                     break;
                 }
-
+                
                 System.out.println("Digite o ID do jogador que deseja desafiar: ");
                 int idDesafiado = input.nextInt();
                 if (ctrl.pesquisarUsuarios(idDesafiado) == null) {
@@ -502,7 +502,6 @@ public class consoleMenu {
                 System.out.println("""
                         [1] Nome
                         [2] Endereço
-                        [3] Horário de funcionamento
                         """);
                 optionInt = input.nextInt();
                 switch (optionInt) {
@@ -524,10 +523,6 @@ public class consoleMenu {
 
                         System.out.println("Novos dados do quadra " + quadra.getEndereco());
                         disc.salvarQuadras();
-                        break;
-
-                    case 3:
-                        System.out.println("**implementar");
                         break;
                 }
                 break;
